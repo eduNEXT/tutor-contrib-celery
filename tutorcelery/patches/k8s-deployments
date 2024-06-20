@@ -1,0 +1,55 @@
+{% for service, variants in CELERY_WORKER_VARIANTS.items() %}
+
+{% for variant in variants%}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{service}}-worker-{{variant}}
+  labels:
+    app.kubernetes.io/name: {{service}}-worker-{{variant}}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{service}}-worker-{{variant}}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{service}}-worker-{{variant}}
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+        - name: {{service}}-worker-{{variant}}
+          image: {{ DOCKER_IMAGE_OPENEDX }}
+          args:
+            - "celery"
+            - "--app={{service}}.celery"
+            - "worker"
+            - "--loglevel=info"
+            - "--hostname=edx.{{service}}.core.{{variant}}"
+            - "--max-tasks-per-child=100"
+            - "--queue=edx.{{service}}.core.{{variant}}"
+          env:
+          - name: SERVICE_VARIANT
+            value: {{service}}
+          - name: DJANGO_SETTINGS_MODULE
+            value: {{service}}.envs.tutor.production
+          volumeMounts:
+            - mountPath: /openedx/edx-platform/{{service}}/envs/tutor/
+              name: settings-{{service}}
+            - mountPath: /openedx/config
+              name: config
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: settings-{{service}}
+          configMap:
+            name: openedx-settings-{{service}}
+        - name: config
+          configMap:
+            name: openedx-config
+{% endfor %}
+
+{% endfor %}

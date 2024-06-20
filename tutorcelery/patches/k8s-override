@@ -1,0 +1,52 @@
+{% for service in ["lms", "cms"] %}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{service}}-worker
+  labels:
+    app.kubernetes.io/name: {{service}}-worker
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{service}}-worker
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{service}}-worker
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+        - name: {{service}}-worker
+          image: {{ DOCKER_IMAGE_OPENEDX }}
+          args:
+            - "celery"
+            - "--app={{service}}.celery"
+            - "worker"
+            - "--loglevel=info"
+            - "--hostname=edx.{{service}}.core.default"
+            - "--max-tasks-per-child=100"
+            - "--queue=edx.{{service}}.core.default"
+          env:
+          - name: SERVICE_VARIANT
+            value: {{service}}
+          - name: DJANGO_SETTINGS_MODULE
+            value: {{service}}.envs.tutor.production
+          volumeMounts:
+            - mountPath: /openedx/edx-platform/{{service}}/envs/tutor/
+              name: settings-{{service}}
+            - mountPath: /openedx/config
+              name: config
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: settings-{{service}}
+          configMap:
+            name: openedx-settings-{{service}}
+        - name: config
+          configMap:
+            name: openedx-config
+{% endfor %}
