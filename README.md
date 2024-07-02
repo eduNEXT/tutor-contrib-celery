@@ -1,7 +1,11 @@
 # Celery plugin for [Tutor](https://docs.tutor.edly.io)
 
-A tutor plugin to extend the default LMS and CMS celery workers that comes
-with tutor.
+A tutor plugin to extend the default LMS and CMS celery workers included in Tutor.
+It adds and configures extra deployments running LMS and CMS celery workers where
+every deployment will process async tasks routed to a specific queue. Having this
+workers separation per queue can help to define the scaling requirements for the Celery
+deployments, since having a single queue (the default one) with a single deployment can
+lead to unexpected behaviors when running large-scale sites.
 
 ## Installation
 
@@ -19,27 +23,29 @@ tutor plugins enable celery
 
 ### Celery queues
 
-By default, tutor-contrib-celery enables the following queues for the services
-with independent deployments for each:
+By default, tutor-contrib-celery enables the following queues with independent deployments
+for each:
 
-- **CMS**: default, high, low
-- **LMS**: default, high, low
+- **CMS**: default, high, low (taken from CMS settings [here](https://github.com/openedx/edx-platform/blob/open-release/redwood.master/cms/envs/common.py#L1578-L1582))
+- **LMS**: default, high, high_mem (taken from LMS settings [here](https://github.com/openedx/edx-platform/blob/open-release/redwood.master/lms/envs/common.py#L2913-L2917))
 
 > [!NOTE]
 > We recommend using [tutor-contrib-pod-autoscaling](https://github.com/eduNEXT/tutor-contrib-pod-autoscaling)
 > to setup requested resources and limits.
 
-In case you are using different celery queues than the defaults on Open edX, you can
+In case you are using different celery queues than the defaults from Open edX, you can
 extend the list by setting `CELERY_WORKER_VARIANTS` on your `config.yml`. The format is the following:
 
 ```yaml
 CELERY_WORKER_VARIANTS:
   lms:
     - high
-    - low
+    - high_mem
+    - lms_custom_queue
   cms:
     - high
     - low
+    - cms_custom_queue
 ```
 
 License
