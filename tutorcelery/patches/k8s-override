@@ -10,7 +10,6 @@ spec:
     spec:
       containers:
         - name: {{service}}-worker
-          image: {{ DOCKER_IMAGE_OPENEDX }}
           args:
             - "celery"
             - "--app={{service}}.celery"
