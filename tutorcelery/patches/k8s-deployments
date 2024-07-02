@@ -1,5 +1,4 @@
 {% for service, variants in CELERY_WORKER_VARIANTS.items() %}
-
 {% for variant in variants%}
 ---
 apiVersion: apps/v1
@@ -28,9 +27,9 @@ spec:
             - "--app={{service}}.celery"
             - "worker"
             - "--loglevel=info"
-            - "--hostname=edx.{{service}}.core.{{variant}}"
+            - "--hostname=edx.{{service}}.core.{{variant}}.%%h"
             - "--max-tasks-per-child=100"
-            - "--queue=edx.{{service}}.core.{{variant}}"
+            - "--queues=edx.{{service}}.core.{{variant}}"
           env:
           - name: SERVICE_VARIANT
             value: {{service}}
@@ -51,5 +50,4 @@ spec:
           configMap:
             name: openedx-config
 {% endfor %}
-
 {% endfor %}
