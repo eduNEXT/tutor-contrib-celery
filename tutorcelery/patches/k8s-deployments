@@ -1,26 +1,27 @@
 {% for service, variants in CELERY_WORKER_VARIANTS.items() %}
 {% for variant in variants%}
+{% set deployment = service + "-" + "worker" + "-" + variant.replace("_", "-") %}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{service}}-worker-{{variant}}
+  name: {{deployment}}
   labels:
-    app.kubernetes.io/name: {{service}}-worker-{{variant}}
+    app.kubernetes.io/name: {{deployment}}
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{service}}-worker-{{variant}}
+      app.kubernetes.io/name: {{deployment}}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{service}}-worker-{{variant}}
+        app.kubernetes.io/name: {{deployment}}
     spec:
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
       containers:
-        - name: {{service}}-worker-{{variant}}
+        - name: {{deployment}}
           image: {{ DOCKER_IMAGE_OPENEDX }}
           args:
             - "celery"
