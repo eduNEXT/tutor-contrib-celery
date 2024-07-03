@@ -1,0 +1,4 @@
+try:
+    EXPLICIT_QUEUES.update({{CELERY_EXPLICIT_QUEUES}})
+except AttributeError:
+    EXPLICIT_QUEUES = {{CELERY_EXPLICIT_QUEUES}}
