@@ -1,4 +1,4 @@
 try:
     EXPLICIT_QUEUES.update({{CELERY_EXPLICIT_QUEUES}})
-except AttributeError:
+except NameError:
     EXPLICIT_QUEUES = {{CELERY_EXPLICIT_QUEUES}}
