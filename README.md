@@ -48,6 +48,17 @@ CELERY_WORKER_VARIANTS:
     - cms_custom_queue
 ```
 
+This plugin also provides a setting to directly route LMS/CMS tasks to an specific queue:
+
+```yaml
+CELERY_LMS_EXPLICIT_QUEUES:
+  lms.djangoapps.grades.tasks.compute_all_grades_for_course:
+    queue: edx.lms.core.high_mem
+CELERY_CMS_EXPLICIT_QUEUES:
+  cms.djangoapps.contentstore.tasks.import_olx:
+    queue: edx.cms.core.high
+```
+
 License
 *******
 
