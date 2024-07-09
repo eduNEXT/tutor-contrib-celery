@@ -19,7 +19,10 @@ hooks.Filters.CONFIG_DEFAULTS.add_items(
         # Each new setting is a pair: (setting_name, default_value).
         # Prefix your setting names with 'CELERY_'.
         ("CELERY_VERSION", __version__),
-        ("CELERY_WORKER_VARIANTS", {"lms": ["high", "high_mem"], "cms": ["high", "low"]}),
+        (
+            "CELERY_WORKER_VARIANTS",
+            {"lms": ["high", "high_mem"], "cms": ["high", "low"]},
+        ),
         ("CELERY_LMS_EXPLICIT_QUEUES", {}),
         ("CELERY_CMS_EXPLICIT_QUEUES", {}),
     ]
