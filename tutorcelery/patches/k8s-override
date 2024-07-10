@@ -1,0 +1,20 @@
+{% for service in ["lms", "cms"] %}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{service}}-worker
+spec:
+  template:
+    spec:
+      containers:
+        - name: {{service}}-worker
+          args:
+            - "celery"
+            - "--app={{service}}.celery"
+            - "worker"
+            - "--loglevel=info"
+            - "--hostname=edx.{{service}}.core.default.%%h"
+            - "--max-tasks-per-child=100"
+            - "--queues=edx.{{service}}.core.default"
+{% endfor %}
