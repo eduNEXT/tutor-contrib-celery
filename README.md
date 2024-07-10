@@ -48,7 +48,8 @@ CELERY_WORKER_VARIANTS:
     - cms_custom_queue
 ```
 
-This plugin also provides a setting to directly route LMS/CMS tasks to an specific queue:
+This plugin also provides a setting to directly route LMS/CMS tasks to an specific queue. It can extends/overrides
+the default `EXPLICIT_QUEUES` setting:
 
 ```yaml
 CELERY_LMS_EXPLICIT_QUEUES:
