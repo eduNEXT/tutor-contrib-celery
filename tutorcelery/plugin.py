@@ -25,6 +25,7 @@ hooks.Filters.CONFIG_DEFAULTS.add_items(
         ),
         ("CELERY_LMS_EXPLICIT_QUEUES", {}),
         ("CELERY_CMS_EXPLICIT_QUEUES", {}),
+        ("CELERY_FLOWER", False),
     ]
 )
 

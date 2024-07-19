@@ -60,6 +60,15 @@ CELERY_CMS_EXPLICIT_QUEUES:
     queue: edx.cms.core.high
 ```
 
+### Enable flower
+
+For troubleshooting purposes, you can enable a flower deployment to monitor in realtime the Celery queues
+times and performance:
+
+```yaml
+CELERY_FLOWER: true
+```
+
 License
 *******
 
