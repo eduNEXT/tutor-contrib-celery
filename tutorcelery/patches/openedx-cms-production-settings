@@ -1,7 +1,8 @@
+{% if CELERY_MULTIQUEUE_ENABLED %}
 try:
     EXPLICIT_QUEUES.update({{CELERY_CMS_EXPLICIT_QUEUES}})
 except NameError:
     EXPLICIT_QUEUES = {{CELERY_CMS_EXPLICIT_QUEUES}}
-
+{% endif %}
 # Prevents losing tasks when workers are shutdown
 CELERY_ACKS_LATE = True

@@ -1,3 +1,4 @@
+{% if CELERY_MULTIQUEUE_ENABLED %}
 {% for service in ["lms", "cms"] %}
 ---
 apiVersion: apps/v1
@@ -18,3 +19,4 @@ spec:
             - "--max-tasks-per-child=100"
             - "--queues=edx.{{service}}.core.default"
 {% endfor %}
+{% endif %}
