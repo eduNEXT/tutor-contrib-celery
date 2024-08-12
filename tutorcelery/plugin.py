@@ -26,6 +26,8 @@ hooks.Filters.CONFIG_DEFAULTS.add_items(
         ("CELERY_LMS_EXPLICIT_QUEUES", {}),
         ("CELERY_CMS_EXPLICIT_QUEUES", {}),
         ("CELERY_FLOWER", False),
+        ("CELERY_FLOWER_HOST", "flower.{{LMS_HOST}}"),
+        ("CELERY_FLOWER_DOCKER_IMAGE", "docker.io/mher/flower:2.0.1"),
     ]
 )
 

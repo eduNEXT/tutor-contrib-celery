@@ -70,8 +70,8 @@ spec:
         app.kubernetes.io/name: flower
     spec:
       containers:
-        - name: flower-edxapp
-          image: docker.io/mher/flower:0.9.5
+        - name: flower
+          image: {{CELERY_FLOWER_DOCKER_IMAGE}}
           ports:
             - containerPort: 5555
           env:
