@@ -25,6 +25,9 @@ hooks.Filters.CONFIG_DEFAULTS.add_items(
         ),
         ("CELERY_LMS_EXPLICIT_QUEUES", {}),
         ("CELERY_CMS_EXPLICIT_QUEUES", {}),
+        ("CELERY_FLOWER", False),
+        ("CELERY_FLOWER_HOST", "flower.{{LMS_HOST}}"),
+        ("CELERY_FLOWER_DOCKER_IMAGE", "docker.io/mher/flower:2.0.1"),
     ]
 )
 
@@ -36,6 +39,7 @@ hooks.Filters.CONFIG_UNIQUE.add_items(
         # Prefix your setting names with 'CELERY_'.
         # For example:
         ### ("CELERY_SECRET_KEY", "{{ 24|random_string }}"),
+        ("CELERY_FLOWER_BASIC_AUTH", "flower:{{ 24 |random_string }}")
     ]
 )
 
