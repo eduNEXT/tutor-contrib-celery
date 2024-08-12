@@ -80,4 +80,6 @@ spec:
             value: redis://{{ REDIS_USERNAME }}:{{ REDIS_PASSWORD }}@{{ REDIS_HOST }}:{{ REDIS_PORT }}/{{ OPENEDX_CELERY_REDIS_DB }}
           - name: FLOWER_PORT
             value: "5555"
+          - name: FLOWER_BASIC_AUTH
+            value: {{CELERY_FLOWER_BASIC_AUTH}}
 {%- endif %}

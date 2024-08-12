@@ -39,6 +39,7 @@ hooks.Filters.CONFIG_UNIQUE.add_items(
         # Prefix your setting names with 'CELERY_'.
         # For example:
         ### ("CELERY_SECRET_KEY", "{{ 24|random_string }}"),
+        ("CELERY_FLOWER_BASIC_AUTH", "flower:{{ 24 |random_string }}")
     ]
 )
 
