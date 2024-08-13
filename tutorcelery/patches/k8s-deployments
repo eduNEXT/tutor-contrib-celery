@@ -1,3 +1,4 @@
+{% if CELERY_MULTIQUEUE_ENABLED %}
 {% for service, variants in CELERY_WORKER_VARIANTS.items() %}
 {% for variant in variants%}
 {% set deployment = service + "-" + "worker" + "-" + variant.replace("_", "-") %}
@@ -52,7 +53,7 @@ spec:
             name: openedx-config
 {% endfor %}
 {% endfor %}
-
+{% endif %}
 {% if CELERY_FLOWER -%}
 ---
 apiVersion: apps/v1
