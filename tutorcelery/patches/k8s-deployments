@@ -85,7 +85,7 @@ spec:
           - name: FLOWER_BASIC_AUTH
             value: {{CELERY_FLOWER_BASIC_AUTH}}
 
-{% if CELERY_FLOWER_PROMETHEUS -%}
+{% if CELERY_FLOWER_SERVICE_MONITOR -%}
 ---
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -104,7 +104,7 @@ spec:
     schema: http
   namespaceSelector:
     matchNames:
-    - chennai-openedx
+    - {{ K8S_NAMESPACE }}
   selector:
     matchLabels:
       app.kubernetes.io/name: flower
