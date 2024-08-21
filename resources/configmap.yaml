@@ -916,15 +916,6 @@ data:
           },
           {
             "allValue": "",
-            "current": {
-              "selected": true,
-              "text": [
-                "chennai-openedx"
-              ],
-              "value": [
-                "chennai-openedx"
-              ]
-            },
             "datasource": {
               "type": "prometheus",
               "uid": "${DS_PROMETHEUS}"

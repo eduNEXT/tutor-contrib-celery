@@ -87,7 +87,7 @@ celery metrics such as:
 Make sure to enable the ServiceMonitor resource to inform Prometheus to scrape metrics from the flower service
 
 ```yaml
-CELERY_FLOWER_PROMETHEUS: true
+CELERY_FLOWER_SERVICE_MONITOR: true
 ```
 
 License
