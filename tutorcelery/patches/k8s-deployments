@@ -94,10 +94,10 @@ metadata:
     app.kubernetes.io/name: flower
     release: prometheus
   name: flower
-  namespace: chennai-openedx
+  namespace: {{ K8S_NAMESPACE }}
 spec:
   endpoints:
-  - interval: 1s
+  - interval: 30s
     port: metrics
     honorLabels: true
     path: /metrics
