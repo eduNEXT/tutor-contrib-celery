@@ -30,7 +30,7 @@ hooks.Filters.CONFIG_DEFAULTS.add_items(
         ("CELERY_FLOWER_HOST", "flower.{{LMS_HOST}}"),
         ("CELERY_FLOWER_DOCKER_IMAGE", "docker.io/mher/flower:2.0.1"),
         ("CELERY_MULTIQUEUE_ENABLED", False),
-        ("CELERY_FLOWER_PROMETHEUS", True),
+        ("CELERY_FLOWER_SERVICE_MONITOR", True),
     ]
 )
 
