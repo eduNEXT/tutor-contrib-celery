@@ -76,6 +76,7 @@ spec:
           image: {{CELERY_FLOWER_DOCKER_IMAGE}}
           ports:
             - containerPort: 5555
+              name: metrics
           env:
           - name: CELERY_BROKER_URL
             value: redis://{{ REDIS_USERNAME }}:{{ REDIS_PASSWORD }}@{{ REDIS_HOST }}:{{ REDIS_PORT }}/{{ OPENEDX_CELERY_REDIS_DB }}
