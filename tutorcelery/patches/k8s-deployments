@@ -84,7 +84,6 @@ spec:
             value: "5555"
           - name: FLOWER_BASIC_AUTH
             value: {{CELERY_FLOWER_BASIC_AUTH}}
-
 {% if CELERY_FLOWER_SERVICE_MONITOR -%}
 ---
 apiVersion: monitoring.coreos.com/v1
@@ -109,5 +108,4 @@ spec:
     matchLabels:
       app.kubernetes.io/name: flower
 {%- endif %}
-
 {%- endif %}
