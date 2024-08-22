@@ -69,6 +69,27 @@ times and performance:
 CELERY_FLOWER: true
 ```
 
+#### Enable Flower Prometheus Integration
+
+If you are running grafana you can use the attached [config map](resources/configmap.yaml) to import a custom Grafana dashboard to monitor
+celery metrics such as:
+
+- Total Queue Length
+- Queue Length by task name
+- Celery Worker Status
+- Number of Tasks Currently Executing at Worker
+- Average Task Runtime at Worker
+- Task Prefetch Time at Worker
+- Number of Tasks Prefetched at Worker
+- Tasks Success Ratio
+- Tasks Failure Ratio
+
+If you are using the [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) you can enable a ServiceMonitor resource to automatically configure a scrape target for the flower service.
+
+```yaml
+CELERY_FLOWER_SERVICE_MONITOR: true
+```
+
 License
 *******
 
