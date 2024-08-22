@@ -84,7 +84,7 @@ celery metrics such as:
 - Tasks Success Ratio
 - Tasks Failure Ratio
 
-If you are using the Prometheus Operator you can enable a ServiceMonitor resource to automatically configure a scrape target for the flower service.
+If you are using the [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator) you can enable a ServiceMonitor resource to automatically configure a scrape target for the flower service.
 
 ```yaml
 CELERY_FLOWER_SERVICE_MONITOR: true
