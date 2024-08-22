@@ -1,6 +1,32 @@
 # CHANGELOG
 
+## v18.2.0 (2024-08-22)
+
+### Feature
+
+* feat: allow to enable prometheus integration (#8)
+
+* feat: allow to enable prometheus integration
+
+* docs: add prometheus documentation and custom dashboard
+
+* chore: address PR suggestions
+
+* fix: address PR suggestions
+
+* fix: address PR suggestions
+
+* chore: disable flower monitoring by default
+
+* chore: remove extra spaces
+
+* chore: improve docs ([`0c3a7c2`](https://github.com/eduNEXT/tutor-contrib-celery/commit/0c3a7c2df2965e64dee9df4562b65697e1a53950))
+
 ## v18.1.0 (2024-08-22)
+
+### Chore
+
+* chore(release): preparing 18.1.0 ([`9a46d7f`](https://github.com/eduNEXT/tutor-contrib-celery/commit/9a46d7f9c30979566f33d54e12fa97a19770b49b))
 
 ### Feature
 
