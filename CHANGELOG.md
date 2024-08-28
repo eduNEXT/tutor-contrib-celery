@@ -1,6 +1,22 @@
 # CHANGELOG
 
+## v18.2.1 (2024-08-28)
+
+### Fix
+
+* fix: remove unnecessary schema property for service monitor (#9)
+
+* fix: remove unnecessary schema property for service monitor
+
+* chore: update celery monitoring dashboard name
+
+* chore: update default refresh rate to 5m ([`089ca1f`](https://github.com/eduNEXT/tutor-contrib-celery/commit/089ca1fcd429a4258738868656dbe756c0758817))
+
 ## v18.2.0 (2024-08-22)
+
+### Chore
+
+* chore(release): preparing 18.2.0 ([`78f8b72`](https://github.com/eduNEXT/tutor-contrib-celery/commit/78f8b72e451730af65e15d72df4152b11ce8fab8))
 
 ### Feature
 
