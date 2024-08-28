@@ -100,7 +100,6 @@ spec:
     port: metrics
     honorLabels: true
     path: /metrics
-    schema: http
   namespaceSelector:
     matchNames:
     - {{ K8S_NAMESPACE }}
