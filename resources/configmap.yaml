@@ -26,7 +26,7 @@ data:
           }
         ]
       },
-      "description": "Basic celery monitoring example",
+      "description": "Basic celery monitoring.",
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
@@ -946,7 +946,7 @@ data:
       },
       "timepicker": {},
       "timezone": "",
-      "title": "Celery Monitoring Copy",
+      "title": "Celery Monitoring",
       "uid": "edvf7swydsutcc",
       "version": 1,
       "weekStart": ""
