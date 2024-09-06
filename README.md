@@ -83,6 +83,22 @@ To enable autoscaling you need to enable `CELERY_ENABLE_KEDA_AUTOSCALING` into y
 > [!NOTE]
 > You can use the filter `CELERY_WORKERS_CONFIG` as shown above to modify the scaling parameters.
 
+If you are using [tutor-contrib-pod-autoscaling](https://github.com/eduNEXT/tutor-contrib-pod-autoscaling) and want to setup Keda autoscaling make sure to disable HPA for the `lms-worker` and the `cms-worker` as you shouldn't use both autoscalers.
+
+```python
+from tutorpod_autoscaling.hooks import AUTOSCALING_CONFIG
+
+@AUTOSCALING_CONFIG.add()
+def _add_my_autoscaling(autoscaling_config):
+    autoscaling_config["lms-worker"].update({
+      "enable_hpa": False,
+    })
+    autoscaling_config["cms-worker"].update({
+      "enable_hpa": False,
+    })
+    return autoscaling_config
+```
+
 ### Enable flower
 
 For troubleshooting purposes, you can enable a flower deployment to monitor in realtime the Celery queues
