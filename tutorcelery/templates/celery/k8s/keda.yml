@@ -20,7 +20,7 @@ spec:
       {% else %}
       address: {{REDIS_HOST}}:{{REDIS_PORT}}
       {% endif %}
-      listLength: {{ config.get("list_length", 40)}}
+      listLength: "{{ config.get("list_length", 40)}}"
       listName: edx.{{service}}.core.{{variant}}
     type: redis
 {% endfor %}
