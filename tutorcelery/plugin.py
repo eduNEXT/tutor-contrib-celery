@@ -21,7 +21,7 @@ hooks.Filters.CONFIG_DEFAULTS.add_items(
         ("CELERY_VERSION", __version__),
         (
             "CELERY_WORKER_VARIANTS",
-            {"lms": ["high", "high_mem"], "cms": ["high", "low"]},
+            {"lms": {"high": {}, "high_mem": {}}, "cms": {"high": {}, "low": {}}},
         ),
         ("CELERY_LMS_EXPLICIT_QUEUES", {}),
         ("CELERY_CMS_EXPLICIT_QUEUES", {}),
@@ -158,6 +158,7 @@ hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
     [
         ("celery/build", "plugins"),
         ("celery/apps", "plugins"),
+        ("celery/k8s", "plugins"),
     ],
 )
 
