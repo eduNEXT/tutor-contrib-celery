@@ -5,13 +5,71 @@ from glob import glob
 
 import click
 import importlib_resources
+import tutor
 from tutor import hooks
+from typing import Callable
 
 from .__about__ import __version__
+from .hooks import CELERY_WORKERS_CONFIG, CELERY_WORKERS_ATTRS_TYPE
 
 ########################################
 # CONFIGURATION
 ########################################
+
+CORE_CELERY_WORKER_CONFIG: dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]] = {
+    "lms": {
+        "high": {
+            "min_replicas": 0,
+            "max_replicas": 10,
+            "list_length": 40,
+        },
+        "high_mem": {
+            "min_replicas": 0,
+            "max_replicas": 10,
+            "list_length": 40,
+        },
+    },
+    "cms": {
+        "high": {
+            "min_replicas": 0,
+            "max_replicas": 10,
+            "list_length": 40,
+        },
+        "low": {
+            "min_replicas": 0,
+            "max_replicas": 10,
+            "list_length": 40,
+        },
+    },
+}
+
+
+# The core autoscaling configs are added with a high priority, such that other users can override or
+# remove them.
+@CELERY_WORKERS_CONFIG.add(priority=hooks.priorities.HIGH)
+def _add_core_autoscaling_config(
+    scaling_config: dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]]
+) -> dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]]:
+    scaling_config.update(CORE_CELERY_WORKER_CONFIG)
+    return scaling_config
+
+
+@tutor.hooks.lru_cache
+def get_celery_workers_config() -> dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]]:
+    """
+    This function is cached for performance.
+    """
+    return CELERY_WORKERS_CONFIG.apply({})
+
+
+def iter_celery_workers_config() -> dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]]:
+    """
+    Yield:
+
+        (name, dict)
+    """
+    return {name: config for name, config in get_celery_workers_config().items()}
+
 
 hooks.Filters.CONFIG_DEFAULTS.add_items(
     [
@@ -31,6 +89,7 @@ hooks.Filters.CONFIG_DEFAULTS.add_items(
         ("CELERY_FLOWER_DOCKER_IMAGE", "docker.io/mher/flower:2.0.1"),
         ("CELERY_MULTIQUEUE_ENABLED", False),
         ("CELERY_FLOWER_SERVICE_MONITOR", False),
+        ("CELERY_ENABLE_KEDA_AUTOSCALING", False),
     ]
 )
 
@@ -163,6 +222,12 @@ hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
 )
 
 
+# Make the pod-autoscaling hook functions available within templates
+hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
+    [
+        ("iter_celery_workers_config", iter_celery_workers_config),
+    ]
+)
 ########################################
 # PATCH LOADING
 # (It is safe & recommended to leave
