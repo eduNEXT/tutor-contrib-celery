@@ -1,18 +1,18 @@
 {% if CELERY_MULTIQUEUE_ENABLED and CELERY_ENABLE_KEDA_AUTOSCALING %}
 {% for service, variants in iter_celery_workers_config().items() %}
 {% for variant, config in variants.items() %}
-{% set deployment = service + "-" + "worker" + "-" + variant.replace("_", "-") %}
+{% set deployment = service + "-" + "worker" + "-" + variant.replace("_", "-")%}
 ---
 apiVersion: keda.sh/v1alpha1
 kind: ScaledObject
 metadata:
-  name: {{ deployment }}-scaledobject
+  name: {% if variant != 'default' %}{{ deployment }}{% else %}{{service}}-worker{% endif %}-scaledobject
 spec:
   minReplicaCount: {{ config.get("min_replicas", 0) }}
   maxReplicaCount: {{ config.get("max_replicas", 30) }}
   scaleTargetRef:
     kind: Deployment
-    name: {{ deployment }}
+    name: {% if variant != 'default' %}{{ deployment }}{% else %}{{service}}-worker{% endif %}
   triggers:
   - metadata:
       {% if REDIS_HOST == 'redis'%}

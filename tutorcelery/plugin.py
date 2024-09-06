@@ -27,6 +27,11 @@ CORE_CELERY_WORKER_CONFIG: dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]] = {
             "max_replicas": 10,
             "list_length": 40,
         },
+        "default": {
+            "min_replicas": 0,
+            "max_replicas": 10,
+            "list_length": 40,
+        },
     },
     "cms": {
         "high": {
@@ -35,6 +40,11 @@ CORE_CELERY_WORKER_CONFIG: dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]] = {
             "list_length": 40,
         },
         "low": {
+            "min_replicas": 0,
+            "max_replicas": 10,
+            "list_length": 40,
+        },
+        "default": {
             "min_replicas": 0,
             "max_replicas": 10,
             "list_length": 40,

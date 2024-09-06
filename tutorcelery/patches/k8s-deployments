@@ -1,6 +1,6 @@
 {% if CELERY_MULTIQUEUE_ENABLED %}
 {% for service, variants in iter_celery_workers_config().items() %}
-{% for variant, config in variants.items() %}
+{% for variant, config in variants.items() if variant != 'default' %}
 {% set deployment = service + "-" + "worker" + "-" + variant.replace("_", "-") %}
 ---
 apiVersion: apps/v1
