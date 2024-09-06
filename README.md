@@ -34,18 +34,23 @@ for each:
 > to setup requested resources and limits.
 
 In case you are using different celery queues than the defaults from Open edX, you can
-extend the list by setting `CELERY_WORKER_VARIANTS` on your `config.yml`. The format is the following:
+extend the list by using the filter `CELERY_WORKERS_CONFIG` on a patch, e.g:
 
-```yaml
-CELERY_WORKER_VARIANTS:
-  lms:
-    - high
-    - high_mem
-    - lms_custom_queue
-  cms:
-    - high
-    - low
-    - cms_custom_queue
+```python
+
+from tutorcelery.hooks import CELERY_WORKERS_CONFIG
+
+@CELERY_WORKERS_CONFIG.add()
+def _add_celery_workers_config(workers_config):
+    # Setup params for the lms high queue
+    workers_config["lms"]["high"] = {
+        "min_replicas": 0,
+        "max_replicas": 30,
+        "list_length": 40,
+    }
+    # Add another queue to the lms with empty params
+    workers_config["lms"]["very_low"] = {}
+    return workers_config
 ```
 
 This plugin also provides a setting to directly route LMS/CMS tasks to an specific queue. It can extends/overrides
@@ -59,6 +64,24 @@ CELERY_CMS_EXPLICIT_QUEUES:
   cms.djangoapps.contentstore.tasks.import_olx:
     queue: edx.cms.core.high
 ```
+
+### Autoscaling
+
+This plugins supports Celery workers autoscaling based on the size of the celery queue of a given worker variant. We are using
+Keda autoscaling for this purposes, check the [Keda documentation](https://keda.sh/docs) to find out more.
+
+To enable autoscaling you need to enable `CELERY_ENABLE_KEDA_AUTOSCALING` into your `config.yml`. The defaults parameters are the following:
+
+```python
+{
+  "min_replicas": 0,
+  "max_replicas": 30,
+  "list_length": 40,
+}
+```
+
+> [!NOTE]
+> You can use the filter `CELERY_WORKERS_CONFIG` as shown above to modify the scaling parameters.
 
 ### Enable flower
 
@@ -91,6 +114,7 @@ CELERY_FLOWER_SERVICE_MONITOR: true
 ```
 
 License
-*******
+
+---
 
 This software is licensed under the terms of the AGPLv3.
