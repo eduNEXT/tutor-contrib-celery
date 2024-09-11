@@ -23,4 +23,7 @@ spec:
             {% else -%}
             - "--exclude-queues=edx.{{exclude}}.core.default"
             {% endif -%}
+            {% for setting, value in config.get("extra_params", {}).items() %}
+            - "--{{setting}}={{value}}"
+            {% endfor %}
 {% endfor %}
