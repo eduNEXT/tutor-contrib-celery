@@ -79,6 +79,24 @@ CELERY_CMS_EXPLICIT_QUEUES:
     queue: edx.cms.core.high
 ```
 
+### Custom parameters
+
+Each deployment can be configured to run with different paramaters to override the defaults, the setting `extra_param`
+is a list that can be used to pass custom parameters to the Celery workers. e.g changing the Celery's pool parameter
+for the high_mem lms worker deployment:
+
+```python
+@CELERY_WORKERS_CONFIG.add()
+def _add_celery_workers_config(workers_config):
+    # Adding LMS extra queues
+    workers_config["lms"]["high_mem"]["extra_params"] = {
+      "--pool=gevent",
+      "--concurrency=100",
+    }
+
+    return workers_config
+```
+
 ### Autoscaling
 
 As an alternative to the CPU/memory based autoscaling offered by the plugin [tutor-contrib-pod-autoscaling](https://github.com/eduNEXT/tutor-contrib-pod-autoscaling),

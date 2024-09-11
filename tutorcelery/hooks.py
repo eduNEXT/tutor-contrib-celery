@@ -20,6 +20,7 @@ class CELERY_WORKERS_ATTRS_TYPE(TypedDict):
     max_replicas: NotRequired[int]
     list_length: NotRequired[int]
     enable_keda: bool
+    extra_params: NotRequired[list[str]]
 
 
 CELERY_WORKERS_CONFIG: Filter[dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]], []] = (
