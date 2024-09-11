@@ -21,16 +21,19 @@ CORE_CELERY_WORKER_CONFIG: dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]] = {
             "min_replicas": 0,
             "max_replicas": 10,
             "list_length": 40,
+            "enable_keda": False,
         },
         "high_mem": {
             "min_replicas": 0,
             "max_replicas": 10,
             "list_length": 40,
+            "enable_keda": False,
         },
         "default": {
             "min_replicas": 0,
             "max_replicas": 10,
             "list_length": 40,
+            "enable_keda": False,
         },
     },
     "cms": {
@@ -38,16 +41,19 @@ CORE_CELERY_WORKER_CONFIG: dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]] = {
             "min_replicas": 0,
             "max_replicas": 10,
             "list_length": 40,
+            "enable_keda": False,
         },
         "low": {
             "min_replicas": 0,
             "max_replicas": 10,
             "list_length": 40,
+            "enable_keda": False,
         },
         "default": {
             "min_replicas": 0,
             "max_replicas": 10,
             "list_length": 40,
+            "enable_keda": False,
         },
     },
 }
@@ -94,7 +100,6 @@ hooks.Filters.CONFIG_DEFAULTS.add_items(
         ("CELERY_FLOWER_DOCKER_IMAGE", "docker.io/mher/flower:2.0.1"),
         ("CELERY_MULTIQUEUE_ENABLED", False),
         ("CELERY_FLOWER_SERVICE_MONITOR", False),
-        ("CELERY_ENABLE_KEDA_AUTOSCALING", False),
     ]
 )
 

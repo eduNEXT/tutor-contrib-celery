@@ -47,6 +47,7 @@ def _add_celery_workers_config(workers_config):
         "min_replicas": 0,
         "max_replicas": 30,
         "list_length": 40,
+        "enable_keda": True,
     }
     # Add another queue to the lms with empty params
     workers_config["lms"]["very_low"] = {}
@@ -70,13 +71,14 @@ CELERY_CMS_EXPLICIT_QUEUES:
 This plugins supports Celery workers autoscaling based on the size of the celery queue of a given worker variant. We are using
 Keda autoscaling for this purposes, check the [Keda documentation](https://keda.sh/docs) to find out more.
 
-To enable autoscaling you need to enable `CELERY_ENABLE_KEDA_AUTOSCALING` into your `config.yml`. The defaults parameters are the following:
+To enable autoscaling you need to enable the `enable_keda` key for every queue variant. The defaults parameters are the following:
 
 ```python
 {
   "min_replicas": 0,
   "max_replicas": 30,
   "list_length": 40,
+  "enable_keda": False,
 }
 ```
 

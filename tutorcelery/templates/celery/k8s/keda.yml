@@ -1,6 +1,5 @@
-{% if CELERY_MULTIQUEUE_ENABLED and CELERY_ENABLE_KEDA_AUTOSCALING %}
 {% for service, variants in iter_celery_workers_config().items() %}
-{% for variant, config in variants.items() %}
+{% for variant, config in variants.items() if config['enable_keda'] %}
 {% set deployment = service + "-" + "worker" + "-" + variant.replace("_", "-")%}
 ---
 apiVersion: keda.sh/v1alpha1
@@ -25,4 +24,3 @@ spec:
     type: redis
 {% endfor %}
 {% endfor %}
-{% endif %}
