@@ -1,5 +1,6 @@
-{% if CELERY_MULTIQUEUE_ENABLED %}
 {% for service in ["lms", "cms"] %}
+{% set exclude = "lms" if service == "cms" else "cms" %}
+{% set service_variants = iter_celery_workers_config().get(service) %}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -17,6 +18,9 @@ spec:
             - "--loglevel=info"
             - "--hostname=edx.{{service}}.core.default.%%h"
             - "--max-tasks-per-child=100"
+            {% if is_celery_multiqueue(service) -%}
             - "--queues=edx.{{service}}.core.default"
+            {% else -%}
+            - "--exclude-queues=edx.{{exclude}}.core.default"
+            {% endif -%}
 {% endfor %}
-{% endif %}

@@ -5,13 +5,80 @@ from glob import glob
 
 import click
 import importlib_resources
+import tutor
 from tutor import hooks
 
 from .__about__ import __version__
+from .hooks import CELERY_WORKERS_CONFIG, CELERY_WORKERS_ATTRS_TYPE
 
 ########################################
 # CONFIGURATION
 ########################################
+
+CORE_CELERY_WORKER_CONFIG: dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]] = {
+    "lms": {
+        "default": {
+            "min_replicas": 0,
+            "max_replicas": 10,
+            "list_length": 40,
+            "enable_keda": False,
+        },
+    },
+    "cms": {
+        "default": {
+            "min_replicas": 0,
+            "max_replicas": 10,
+            "list_length": 40,
+            "enable_keda": False,
+        },
+    },
+}
+
+
+# The core autoscaling configs are added with a high priority, such that other users can override or
+# remove them.
+@CELERY_WORKERS_CONFIG.add(priority=hooks.priorities.HIGH)
+def _add_core_autoscaling_config(
+    scaling_config: dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]]
+) -> dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]]:
+    scaling_config.update(CORE_CELERY_WORKER_CONFIG)
+    return scaling_config
+
+
+@tutor.hooks.lru_cache
+def get_celery_workers_config() -> dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]]:
+    """
+    This function is cached for performance.
+    """
+    return CELERY_WORKERS_CONFIG.apply({})
+
+
+def iter_celery_workers_config() -> dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]]:
+    """
+    Yield:
+
+        (name, dict)
+    """
+    return {name: config for name, config in get_celery_workers_config().items()}
+
+
+def is_celery_multiqueue(service: str) -> bool:
+    """
+    This function validates whether celery is configured in multiqueue mode for a given service
+    """
+    service_celery_config = iter_celery_workers_config().get(service, {})
+    service_queue_len = len(service_celery_config.keys())
+
+    # If no queue variants are configured, multiqueue is disabled
+    if not service_queue_len:
+        return False
+
+    # Multiqueue is not enabled if only the default variant is available
+    if service_queue_len == 1 and "default" in service_celery_config:
+        return False
+
+    return True
+
 
 hooks.Filters.CONFIG_DEFAULTS.add_items(
     [
@@ -19,17 +86,12 @@ hooks.Filters.CONFIG_DEFAULTS.add_items(
         # Each new setting is a pair: (setting_name, default_value).
         # Prefix your setting names with 'CELERY_'.
         ("CELERY_VERSION", __version__),
-        (
-            "CELERY_WORKER_VARIANTS",
-            {"lms": ["high", "high_mem"], "cms": ["high", "low"]},
-        ),
         ("CELERY_LMS_EXPLICIT_QUEUES", {}),
         ("CELERY_CMS_EXPLICIT_QUEUES", {}),
         ("CELERY_FLOWER", False),
         ("CELERY_FLOWER_EXPOSE_SERVICE", False),
         ("CELERY_FLOWER_HOST", "flower.{{LMS_HOST}}"),
         ("CELERY_FLOWER_DOCKER_IMAGE", "docker.io/mher/flower:2.0.1"),
-        ("CELERY_MULTIQUEUE_ENABLED", False),
         ("CELERY_FLOWER_SERVICE_MONITOR", False),
     ]
 )
@@ -158,10 +220,18 @@ hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
     [
         ("celery/build", "plugins"),
         ("celery/apps", "plugins"),
+        ("celery/k8s", "plugins"),
     ],
 )
 
 
+# Make the pod-autoscaling hook functions available within templates
+hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
+    [
+        ("iter_celery_workers_config", iter_celery_workers_config),
+        ("is_celery_multiqueue", is_celery_multiqueue),
+    ]
+)
 ########################################
 # PATCH LOADING
 # (It is safe & recommended to leave
