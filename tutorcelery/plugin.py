@@ -17,18 +17,6 @@ from .hooks import CELERY_WORKERS_CONFIG, CELERY_WORKERS_ATTRS_TYPE
 
 CORE_CELERY_WORKER_CONFIG: dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]] = {
     "lms": {
-        "high": {
-            "min_replicas": 0,
-            "max_replicas": 10,
-            "list_length": 40,
-            "enable_keda": False,
-        },
-        "high_mem": {
-            "min_replicas": 0,
-            "max_replicas": 10,
-            "list_length": 40,
-            "enable_keda": False,
-        },
         "default": {
             "min_replicas": 0,
             "max_replicas": 10,
@@ -37,18 +25,6 @@ CORE_CELERY_WORKER_CONFIG: dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]] = {
         },
     },
     "cms": {
-        "high": {
-            "min_replicas": 0,
-            "max_replicas": 10,
-            "list_length": 40,
-            "enable_keda": False,
-        },
-        "low": {
-            "min_replicas": 0,
-            "max_replicas": 10,
-            "list_length": 40,
-            "enable_keda": False,
-        },
         "default": {
             "min_replicas": 0,
             "max_replicas": 10,
@@ -86,6 +62,24 @@ def iter_celery_workers_config() -> dict[str, dict[str, CELERY_WORKERS_ATTRS_TYP
     return {name: config for name, config in get_celery_workers_config().items()}
 
 
+def is_celery_multiqueue(service: str) -> bool:
+    """
+    This function validates whether celery is configured in multiqueue mode for a given service
+    """
+    service_celery_config = iter_celery_workers_config().get(service, {})
+    service_queue_len = len(service_celery_config.keys())
+
+    # If no queue variants are configured, multiqueue is disabled
+    if not service_queue_len:
+        return False
+
+    # Multiqueue is not enabled if only the default variant is available
+    if service_queue_len == 1 and "default" in service_celery_config:
+        return False
+
+    return True
+
+
 hooks.Filters.CONFIG_DEFAULTS.add_items(
     [
         # Add your new settings that have default values here.
@@ -98,7 +92,6 @@ hooks.Filters.CONFIG_DEFAULTS.add_items(
         ("CELERY_FLOWER_EXPOSE_SERVICE", False),
         ("CELERY_FLOWER_HOST", "flower.{{LMS_HOST}}"),
         ("CELERY_FLOWER_DOCKER_IMAGE", "docker.io/mher/flower:2.0.1"),
-        ("CELERY_MULTIQUEUE_ENABLED", False),
         ("CELERY_FLOWER_SERVICE_MONITOR", False),
     ]
 )
@@ -236,6 +229,7 @@ hooks.Filters.ENV_TEMPLATE_TARGETS.add_items(
 hooks.Filters.ENV_TEMPLATE_VARIABLES.add_items(
     [
         ("iter_celery_workers_config", iter_celery_workers_config),
+        ("is_celery_multiqueue", is_celery_multiqueue),
     ]
 )
 ########################################

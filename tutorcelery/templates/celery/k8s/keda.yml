@@ -1,5 +1,5 @@
 {% for service, variants in iter_celery_workers_config().items() %}
-{% for variant, config in variants.items() if config['enable_keda'] %}
+{% for variant, config in variants.items() if config.get('enable_keda') %}
 {% set deployment = service + "-" + "worker" + "-" + variant.replace("_", "-")%}
 ---
 apiVersion: keda.sh/v1alpha1
@@ -14,11 +14,11 @@ spec:
     name: {% if variant != 'default' %}{{ deployment }}{% else %}{{service}}-worker{% endif %}
   triggers:
   - metadata:
-      {% if REDIS_HOST == 'redis'%}
+      {% if REDIS_HOST == 'redis' -%}
       address: redis.{{K8S_NAMESPACE}}:{{REDIS_PORT}}
-      {% else %}
+      {% else -%}
       address: {{REDIS_HOST}}:{{REDIS_PORT}}
-      {% endif %}
+      {% endif -%}
       listLength: "{{ config.get("list_length", 40)}}"
       listName: edx.{{service}}.core.{{variant}}
     type: redis
