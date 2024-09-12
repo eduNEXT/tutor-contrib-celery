@@ -51,7 +51,7 @@ from tutorcelery.hooks import CELERY_WORKERS_CONFIG
 @CELERY_WORKERS_CONFIG.add()
 def _add_celery_workers_config(workers_config):
     # Adding LMS extra queues
-    workers_config["lms"]["high"] = {}
+    workers_config["lms"]["high"] = {}  # Make sure to match the key with the queue name: edx.lms.core.high
     workers_config["lms"]["high_mem"] = {}
 
     # Adding CMS extra queues
