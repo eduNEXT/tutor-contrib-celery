@@ -1,6 +1,52 @@
 # CHANGELOG
 
+## v18.3.0 (2024-09-12)
+
+### Feature
+
+* feat: add keda autoscaling support (#10)
+
+* feat: add keda autoscaling support
+
+* refactor: use a hook to extend celery config
+
+* docs: update documentation with new filter
+
+* fix: use not required validation
+
+* fix: use listLength as string
+
+* docs: add pod-autoscaling notes
+
+* fix: allow to scale default workers
+
+* chore: quality fixes
+
+(cherry picked from commit b529b0c1a23bb80115ba4fe1a30690df4918fb7a)
+
+* refactor: use enable_keda key per variant
+
+(cherry picked from commit b52f142baeb821fc2779b89184503da25b1ef483)
+
+* fix: only apply overrides if default variant is set
+
+* fix: add missing enable_keda to typed dict
+
+* feat: removing CELERY_MULTIQUEUE_ENABLED
+
+* docs: clarify key entries for workers config
+
+(cherry picked from commit 70aae3b563f669971b2076257347a5f377aef2c3)
+
+---------
+
+Co-authored-by: jfavellar90 &lt;jhony.avella@edunext.co&gt; ([`d2c2f84`](https://github.com/eduNEXT/tutor-contrib-celery/commit/d2c2f846e88e92774bffe7de113df903ed794872))
+
 ## v18.2.1 (2024-08-28)
+
+### Chore
+
+* chore(release): preparing 18.2.1 ([`317d8ae`](https://github.com/eduNEXT/tutor-contrib-celery/commit/317d8aeb1350e9bb433e52681bd45c4ae06e8651))
 
 ### Fix
 
