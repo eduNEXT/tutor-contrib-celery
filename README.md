@@ -98,6 +98,7 @@ To enable autoscaling you need to enable the `enable_keda` key for every queue v
 
 > [!NOTE]
 > You can use the filter `CELERY_WORKERS_CONFIG` as shown above to modify the scaling parameters for every queue.
+> This has been test against Keda v2.15.0 and above.
 
 If you are using [tutor-contrib-pod-autoscaling](https://github.com/eduNEXT/tutor-contrib-pod-autoscaling) and want to setup Keda autoscaling, make sure to disable HPA for the `lms-worker` and the `cms-worker` as **using both autoscalers at the same time is not recommended**.
 
