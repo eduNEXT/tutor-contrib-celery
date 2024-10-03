@@ -85,6 +85,7 @@ Each deployment can be configured to run with different paramaters to override t
 is a dictionary that can be used to pass custom parameters to the Celery workers. e.g changing the Celery's pool parameter
 for the default lms worker deployment:
 
+```python
 @CELERY_WORKERS_CONFIG.add()
 def _add_celery_workers_config(workers_config):
     # Adding LMS extra queues
@@ -94,6 +95,7 @@ def _add_celery_workers_config(workers_config):
     }
 
     return workers_config
+```
 
 ### Autoscaling
 
