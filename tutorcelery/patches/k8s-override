@@ -1,6 +1,7 @@
 {% for service in ["lms", "cms"] %}
 {% set exclude = "lms" if service == "cms" else "cms" %}
 {% set service_variants = iter_celery_workers_config().get(service) %}
+{% set config = service_variants.get('default')%}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -23,4 +24,7 @@ spec:
             {% else -%}
             - "--exclude-queues=edx.{{exclude}}.core.default"
             {% endif -%}
+            {% for setting, value in config.get("extra_params", {}).items() %}
+            - "--{{setting}}={{value}}"
+            {% endfor %}
 {% endfor %}
