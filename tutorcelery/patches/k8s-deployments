@@ -31,6 +31,9 @@ spec:
             - "--hostname=edx.{{service}}.core.{{variant}}.%%h"
             - "--max-tasks-per-child=100"
             - "--queues=edx.{{service}}.core.{{variant}}"
+            {% for setting, value in config.get("extra_params", {}).items() %}
+            - "--{{setting}}={{value}}"
+            {% endfor %}
           env:
           - name: SERVICE_VARIANT
             value: {{service}}
