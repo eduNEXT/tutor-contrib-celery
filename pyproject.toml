@@ -27,7 +27,7 @@ dependencies = [
     "tutor>=18.2,<19.0.0"
 ]
 
-optional-dependencies = { dev = ["python-semantic-release", "pylint", "black"]}
+optional-dependencies = { dev = ["python-semantic-release", "pylint", "black", "build"]}
 
 [project.urls]
 Homepage = "https://github.com/edunext/tutor-contrib-celery"
