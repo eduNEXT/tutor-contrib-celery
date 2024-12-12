@@ -80,6 +80,14 @@ def is_celery_multiqueue(service: str) -> bool:
     return True
 
 
+@hooks.Actions.PROJECT_ROOT_READY.add()
+def configure_default_workers(root: str) -> None:
+    if is_celery_multiqueue("lms"):
+        hooks.Filters.LMS_WORKER_COMMAND.add_items(["--queues=edx.lms.core.default"])
+    if is_celery_multiqueue("cms"):
+        hooks.Filters.CMS_WORKER_COMMAND.add_items(["--queues=edx.cms.core.default"])
+
+
 hooks.Filters.CONFIG_DEFAULTS.add_items(
     [
         # Add your new settings that have default values here.
