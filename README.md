@@ -216,10 +216,7 @@ def _add_celery_workers_config(workers_config):
         "min_replicas": 0,
         "max_replicas": 10,
         "enable_keda": False,
-        "extra_params": [
-          "--pool=gevent",
-          "--concurrency=100",
-        ]
+        "extra_params": []
     }
 
     return workers_config
