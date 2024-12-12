@@ -10,7 +10,7 @@ lead to unexpected behaviors when running large-scale sites.
 ## Installation
 
 ```shell
-pip install git+https://github.com/eduNEXT/tutor-contrib-celery
+pip install tutor-contrib-celery
 ```
 
 ## Usage
