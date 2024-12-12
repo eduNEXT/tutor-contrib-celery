@@ -164,6 +164,83 @@ If you are using the [Prometheus Operator](https://github.com/prometheus-operato
 CELERY_FLOWER_SERVICE_MONITOR: true
 ```
 
+## Production configuration
+
+The following are the recommended defaults for a production installation with support for the default LMS and CMS queues:
+
+```python
+@CELERY_WORKERS_CONFIG.add()
+def _add_celery_workers_config(workers_config):
+    # Adding LMS extra queues
+    workers_config["lms"]["high"] = {
+        "min_replicas": 0,
+        "max_replicas": 10,
+        "list_length": 40,
+        "enable_keda": False,
+    }
+    workers_config["lms"]["high_mem"] = {
+        "min_replicas": 0,
+        "max_replicas": 10,
+        "list_length": 40,
+        "enable_keda": False,
+    }
+
+    # Adding CMS extra queues
+    workers_config["cms"]["high"] = {
+        "min_replicas": 0,
+        "max_replicas": 10,
+        "list_length": 40,
+        "enable_keda": False,
+    }
+    workers_config["cms"]["low"] = {
+        "min_replicas": 0,
+        "max_replicas": 10,
+        "list_length": 40,
+        "enable_keda": False,
+    }
+
+    return workers_config
+```
+
+## Aspects specific queue
+
+To run an specific Celery deployment to process Aspects tasks, follow this steps:
+
+1. Add an lms worker deployment for Aspects:
+
+```python
+@CELERY_WORKERS_CONFIG.add()
+def _add_celery_workers_config(workers_config):
+    # Adding LMS extra queues
+    workers_config["lms"]["aspects"] = {
+        "min_replicas": 0,
+        "max_replicas": 10,
+        "enable_keda": False,
+        "extra_params": [
+          "--pool=gevent",
+          "--concurrency=100",
+        ]
+    }
+
+    return workers_config
+```
+
+2. Route specific Aspects related tasks to this queue:
+
+```yaml
+CELERY_LMS_EXPLICIT_QUEUES:
+  platform_plugin_aspects.tasks.dump_course_to_clickhouse:
+    queue: edx.lms.core.aspects
+  platform_plugin_aspects.tasks.dump_data_to_clickhouse:
+    queue: edx.lms.core.aspects
+  event_routing_backends.tasks.dispatch_bulk_events:
+    queue: edx.lms.core.aspects
+  event_routing_backends.tasks.dispatch_event:
+    queue: edx.lms.core.aspects
+  event_routing_backends.tasks.dispatch_event_persistent:
+    queue: edx.lms.core.aspects
+```
+
 License
 
 ---
