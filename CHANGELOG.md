@@ -1,7 +1,23 @@
 # CHANGELOG
 
 
+## v19.0.0 (2024-12-18)
+
+### Features
+
+- Add support for sumac ([#13](https://github.com/eduNEXT/tutor-contrib-celery/pull/13),
+  [`3d050c4`](https://github.com/eduNEXT/tutor-contrib-celery/commit/3d050c47d206ec4056985216317130ac03bc791e))
+
+- Sumac release
+  ([`7ace1d3`](https://github.com/eduNEXT/tutor-contrib-celery/commit/7ace1d317766758c950297693cc7f3ef68bd6568))
+
+
 ## v18.4.0 (2024-12-12)
+
+### Chores
+
+- **release**: Preparing 18.4.0
+  ([`1c8cf03`](https://github.com/eduNEXT/tutor-contrib-celery/commit/1c8cf036ff10bbc9659ddfa7969e2ef45c670be4))
 
 ### Features
 
