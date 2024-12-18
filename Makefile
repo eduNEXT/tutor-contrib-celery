@@ -32,6 +32,10 @@ local-release:
 	@echo "You can push the changes and release manually."
 	semantic-release version --changelog --commit --no-push
 
+dryrun-release:
+	@echo "New release dryrun"
+	semantic-release --noop version  --changelog --commit --push --tag
+
 ESCAPE = 
 help: ## Print this help
 	@grep -E '^([a-zA-Z_-]+:.*?## .*|######* .+)$$' Makefile \
