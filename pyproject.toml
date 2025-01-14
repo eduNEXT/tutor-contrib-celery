@@ -54,7 +54,7 @@ version_variables = [
 ]
 
 [tool.semantic_release.branches.main]
-match = "(main|master)"
+match = "(redwood)"
 prerelease_token = "rc"
 prerelease = false
 
