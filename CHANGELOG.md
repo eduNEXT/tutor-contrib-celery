@@ -1,6 +1,18 @@
 # CHANGELOG
 
 
+## v18.4.1 (2025-01-14)
+
+### Bug Fixes
+
+- Trigger new dot release
+  ([`513f28c`](https://github.com/eduNEXT/tutor-contrib-celery/commit/513f28cf06092d7f8c2ba9d8060d477b45e2ba5e))
+
+The 19.0.0 was tagged and published as the 18.4.0 version by mistake, causing errors when installing
+  due to wrongly specified dependencies ( tutor>=19,<20 instead of tutor>=18<19) this empty commit
+  should trigger a new dot release to be published in PyPI by CI.
+
+
 ## v18.4.0 (2024-12-12)
 
 ### Features
@@ -19,11 +31,6 @@ refactor!: use new filter to define celery command
 
 
 ## v18.3.0 (2024-09-12)
-
-### Chores
-
-- **release**: Preparing 18.3.0
-  ([`c7732e5`](https://github.com/eduNEXT/tutor-contrib-celery/commit/c7732e56037c26de79a7f838b7d8f3c301bac4a4))
 
 ### Features
 
@@ -81,18 +88,8 @@ Co-authored-by: jfavellar90 <jhony.avella@edunext.co>
 
 * chore: update default refresh rate to 5m
 
-### Chores
-
-- **release**: Preparing 18.2.1
-  ([`317d8ae`](https://github.com/eduNEXT/tutor-contrib-celery/commit/317d8aeb1350e9bb433e52681bd45c4ae06e8651))
-
 
 ## v18.2.0 (2024-08-22)
-
-### Chores
-
-- **release**: Preparing 18.2.0
-  ([`78f8b72`](https://github.com/eduNEXT/tutor-contrib-celery/commit/78f8b72e451730af65e15d72df4152b11ce8fab8))
 
 ### Features
 
@@ -124,11 +121,6 @@ Co-authored-by: jfavellar90 <jhony.avella@edunext.co>
 
 - Allow to disable multiqueue tuning
   ([`43f3f1d`](https://github.com/eduNEXT/tutor-contrib-celery/commit/43f3f1d5b2324b87ce1902fc4ba3fd66c0f20227))
-
-### Chores
-
-- **release**: Preparing 18.1.0
-  ([`9a46d7f`](https://github.com/eduNEXT/tutor-contrib-celery/commit/9a46d7f9c30979566f33d54e12fa97a19770b49b))
 
 ### Features
 
