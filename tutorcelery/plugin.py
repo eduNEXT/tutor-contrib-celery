@@ -39,7 +39,7 @@ CORE_CELERY_WORKER_CONFIG: dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]] = {
 # remove them.
 @CELERY_WORKERS_CONFIG.add(priority=hooks.priorities.HIGH)
 def _add_core_autoscaling_config(
-    scaling_config: dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]]
+    scaling_config: dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]],
 ) -> dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]]:
     scaling_config.update(CORE_CELERY_WORKER_CONFIG)
     return scaling_config
