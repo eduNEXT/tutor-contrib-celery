@@ -5,12 +5,13 @@ them.
 """
 
 from __future__ import annotations
+
 import sys
 
 if sys.version_info < (3, 11):
-    from typing_extensions import TypedDict, NotRequired
+    from typing_extensions import NotRequired, TypedDict
 else:
-    from typing import TypedDict, NotRequired
+    from typing import NotRequired, TypedDict
 
 from tutor.core.hooks import Filter
 
@@ -23,6 +24,4 @@ class CELERY_WORKERS_ATTRS_TYPE(TypedDict):
     extra_params: NotRequired[list[str]]
 
 
-CELERY_WORKERS_CONFIG: Filter[dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]], []] = (
-    Filter()
-)
+CELERY_WORKERS_CONFIG: Filter[dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]], tuple] = Filter()
