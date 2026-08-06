@@ -24,4 +24,4 @@ class CELERY_WORKERS_ATTRS_TYPE(TypedDict):
     extra_params: NotRequired[list[str]]
 
 
-CELERY_WORKERS_CONFIG: Filter[dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]], tuple] = Filter()
+CELERY_WORKERS_CONFIG: Filter[dict[str, dict[str, CELERY_WORKERS_ATTRS_TYPE]], []] = Filter()
