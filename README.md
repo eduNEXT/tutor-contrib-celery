@@ -45,8 +45,8 @@ By default Tutor implements a single deployment to process tasks on all queues i
 can be used to add the extra queues from LMS/CMS configuration.
 
 ```python
-
 from tutorcelery.hooks import CELERY_WORKERS_CONFIG
+
 
 @CELERY_WORKERS_CONFIG.add()
 def _add_celery_workers_config(workers_config):
@@ -90,8 +90,8 @@ for the high_mem lms worker deployment:
 def _add_celery_workers_config(workers_config):
     # Adding LMS extra queues
     workers_config["lms"]["high_mem"]["extra_params"] = {
-      "--pool=gevent",
-      "--concurrency=100",
+        "--pool=gevent",
+        "--concurrency=100",
     }
 
     return workers_config
@@ -107,10 +107,10 @@ To enable autoscaling you need to enable the `enable_keda` key for every queue v
 
 ```python
 {
-  "min_replicas": 0,
-  "max_replicas": 30,
-  "list_length": 40,
-  "enable_keda": False,
+    "min_replicas": 0,
+    "max_replicas": 30,
+    "list_length": 40,
+    "enable_keda": False,
 }
 ```
 
@@ -123,14 +123,19 @@ If you are using [tutor-contrib-pod-autoscaling](https://github.com/eduNEXT/tuto
 ```python
 from tutorpod_autoscaling.hooks import AUTOSCALING_CONFIG
 
+
 @AUTOSCALING_CONFIG.add()
 def _add_my_autoscaling(autoscaling_config):
-    autoscaling_config["lms-worker"].update({
-      "enable_hpa": False,
-    })
-    autoscaling_config["cms-worker"].update({
-      "enable_hpa": False,
-    })
+    autoscaling_config["lms-worker"].update(
+        {
+            "enable_hpa": False,
+        }
+    )
+    autoscaling_config["cms-worker"].update(
+        {
+            "enable_hpa": False,
+        }
+    )
     return autoscaling_config
 ```
 
